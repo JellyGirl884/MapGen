@@ -1,13 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Map Generator</title>
-</head>
-<body>
+fetch("countries.json")
+  .then(r => r.json())
+  .then(countries => {
 
-<h1>Map Generator</h1>
+    const rule = {
+      type: "Matching",
+      property: "continent",
+      value: "Europe",
+      mode: "include"
+    };
 
-<script src="script.js"></script>
+    const result = countries.filter(country => {
+      const match = country[rule.property] === rule.value;
+      return rule.mode === "include" ? match : !match;
+    });
 
-</body>
-</html>
+    document.body.innerHTML = "<h2>Filtered Countries:</h2><pre>" +
+      JSON.stringify(result, null, 2) +
+      "</pre>";
+  });
